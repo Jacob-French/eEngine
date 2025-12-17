@@ -1,122 +1,122 @@
 'use client'
 
-// components/SequencePlayer.jsx
+// components/CardAnimation.jsx
 import { useEffect, useRef, useState } from 'react';
 
 const SequencePlayer = ({ 
-  frameCount, // Total number of images (e.g., 30)
-  fps = 15,   // Frames per second desired
-  width,      // Canvas width (should match image resolution or aspect ratio)
-  height,     // Canvas height
-  folderPath,  // Path inside /public (e.g., "/ecard-anim")
+  frameCount, 
+  fps = 15, 
+  width, 
+  height, 
+  folderPath,
+  animationState = 'start', // start, end, forwards, backwards
   className
 }) => {
   const canvasRef = useRef(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  // We store the loaded Image objects here so they don't get garbage collected
   const imagesRef = useRef([]); 
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  // We track the current frame in a Ref so the interval can read/write instantly
+  const frameIndexRef = useRef(0);
 
-  // Helper function to construct the path to a specific frame file
-  // Takes an index (e.g., 5) and returns "/ecard-anim/frame_005.webp"
+  // Helper: Matches "frame_001.webp" format
   const getFramePath = (index) => {
-    // .padStart(3, '0') ensures index 5 becomes "005" to match filenames
-    const paddedIndex = index.toString().padStart(3, '0');
+    const paddedIndex = (index + 1).toString().padStart(3, '0');
     return `${folderPath}/frame_${paddedIndex}.webp`;
   };
 
-  // --- EFFECT 1: PRELOAD IMAGES ---
-  // This runs once when the component mounts.
+  // 1. PRELOAD IMAGES
   useEffect(() => {
     let isMounted = true;
     const promises = [];
 
-    console.log("Starting image preload...");
-
-    for (let i = 1; i <= frameCount; i++) {
-       // Create a promise for every single image
-      const p = new Promise((resolve, reject) => {
+    for (let i = 0; i < frameCount; i++) {
+      const p = new Promise((resolve) => {
         const img = new Image();
         img.onload = () => {
-           // Store loaded image in our ref array
            imagesRef.current[i] = img;
            resolve();
         };
-        img.onerror = (e) => {
-            console.error(`Failed to load frame ${i}`, e);
-            reject(e);
-        };
-        // Setting src starts the download
+        // Optional: Error handling to help debug missing files
+        img.onerror = () => console.error(`Missing file: ${getFramePath(i)}`);
+        
         img.src = getFramePath(i);
       });
       promises.push(p);
     }
 
-    // Wait for ALL images to finish downloading
-    Promise.all(promises)
-      .then(() => {
-        if (isMounted) {
-            console.log("All images preloaded. Starting animation.");
-            setIsLoaded(true);
-        }
-      })
-      .catch((err) => console.error("Preloading failed:", err));
+    Promise.all(promises).then(() => {
+        if (isMounted) setIsLoaded(true);
+    });
 
-      return () => { isMounted = false; }
+    return () => { isMounted = false; }
   }, [frameCount, folderPath]);
 
+  // 2. DRAW FRAME FUNCTION
+  const drawFrame = (index) => {
+      const canvas = canvasRef.current;
+      if (!canvas || !imagesRef.current[index]) return;
+      
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, width, height);
+      ctx.drawImage(imagesRef.current[index], 0, 0, width, height);
+  };
 
-  // --- EFFECT 2: ANIMATION LOOP ---
-  // This only runs once 'isLoaded' becomes true.
+  // 3. ANIMATION CONTROLLER
+  // This effect handles the Logic (Resetting position) and the Loop (Ticking)
   useEffect(() => {
     if (!isLoaded) return;
 
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    let currentFrameIndex = 0;
+    // A. HANDLE STATE CHANGES (JUMP TO START POSITIONS)
+    // Whenever animationState changes, we immediately set the starting frame.
+    if (animationState === 'forwards' || animationState === 'start') {
+        frameIndexRef.current = 0;
+    } else if (animationState === 'backwards' || animationState === 'end') {
+        frameIndexRef.current = frameCount - 1;
+    }
 
-    // Calculate how many milliseconds to wait between frames
-    const intervalMs = 1000 / fps; 
+    // Draw the new start position immediately
+    drawFrame(frameIndexRef.current);
 
-    const draw = () => {
-       // 1. Clear the previous frame (crucial for transparency)
-      ctx.clearRect(0, 0, width, height);
+    // If we are in a static state, we are done. Don't start the interval.
+    if (animationState === 'start' || animationState === 'end') {
+        return; 
+    }
+
+    // B. START ANIMATION LOOP
+    // Only runs if state is 'play-from-start' or 'play-backwards-from-end'
+    const intervalMs = 1000 / fps;
+    
+    const tick = () => {
+      let current = frameIndexRef.current;
       
-      // 2. Get the preloaded image object
-      const img = imagesRef.current[currentFrameIndex];
-      
-      // 3. Draw it onto the canvas
-      if (img) {
-         // drawImage(image, x position, y position, width to draw, height to draw)
-         ctx.drawImage(img, 0, 0, width, height);
-      }
+      // Determine target based on which play mode we are in
+      // If playing from start, we want to reach the end (frameCount - 1)
+      // If playing backwards, we want to reach 0
+      let target = (animationState === 'forwards') ? frameCount - 1 : 0; 
 
-      // 4. Increment index, loop back to 0 if at the end
-      currentFrameIndex = (currentFrameIndex + 1) % frameCount;
+      // If we reached the target, stop updating
+      if (current === target) return;
+
+      // Move one step closer to target
+      let nextFrame = current < target ? current + 1 : current - 1;
+
+      frameIndexRef.current = nextFrame;
+      drawFrame(nextFrame);
     };
 
-    // Start the loop
-    const timerId = setInterval(draw, intervalMs);
+    const timerId = setInterval(tick, intervalMs);
 
-    // Cleanup: Stop the interval if the component is unmounted (e.g., user leaves page)
     return () => clearInterval(timerId);
-
-  }, [isLoaded, fps, width, height, frameCount]);
+  }, [isLoaded, fps, width, height, frameCount, animationState]);
 
   return (
     <div className={`relative w-full h-full ${className}`}>
-        {!isLoaded && (
-             // A simple loading indicator while prefetching
-            <div style={{position:'absolute', top:'50%', left:'50%', transform: 'translate(-50%, -50%)'}}>
-                Loading Animation...
-            </div>
-        )}
-        {/* The actual drawing surface */}
         <canvas 
             ref={canvasRef} 
             width={width} 
             height={height}
-            // CSS to make it responsive if needed, maintaining aspect ratio
-            style={{ display: 'block', maxWidth: '100%', height: 'auto', opacity: isLoaded ? 1 : 0, transition: 'opacity 0.3s ease' }} 
+            style={{ width: '100%', height: 'auto', display: 'block' }} 
         />
     </div>
   );

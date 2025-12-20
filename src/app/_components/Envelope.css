@@ -16,7 +16,7 @@
 }
 
 .card-rotated{
-  transform: scaleX(0);
+  transform: rotateY(90deg);
 }
 
 @keyframes cardMoveAnimation {

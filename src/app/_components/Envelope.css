@@ -1,0 +1,66 @@
+.card-transition-1{
+  transition-property: transform;
+  transition-duration: var(--card-transition-duration);
+  transition-timing-function: ease-in;
+}
+
+.card-transition-2{
+  transition-property: transform;
+  transition-duration: var(--card-transition-duration);
+  transition-delay: var(--card-transition-duration);
+  transition-timing-function: ease-out;
+}
+
+.card-flat{
+  transform: scaleX(1);
+}
+
+.card-rotated{
+  transform: scaleX(0);
+}
+
+@keyframes cardMoveAnimation {
+  0% { translate: 0 0; }
+  50% { translate: 0 -17rem; }
+  100% { translate: 0 0; }
+}
+
+@keyframes cardRotateScaleOutAnimation{
+  0% { rotate: 0deg; scale: 1; }
+  100% { rotate: 90deg; scale: 1.7; }
+}
+
+@keyframes cardRotateScaleInAnimation{
+  0% { rotate: 90deg; scale: 1.7; }
+  100% { rotate: 0deg; scale: 1; }
+}
+
+@keyframes zIndexOutAnimation{
+  0% { z-index: 5; }
+  100% {  z-index: 20; }
+}
+
+@keyframes zIndexInAnimation{
+  0% { z-index: 20; }
+  100% {  z-index: 5; }
+}
+
+.card-move-out-animation{
+  animation:
+    cardMoveAnimation 4s ease-in-out 0s 1 forwards,
+    zIndexOutAnimation 4s linear 0.2s 1 forwards;
+}
+
+.card-move-in-animation{
+  animation:
+    cardMoveAnimation 4s ease-in-out 0s 1 forwards,
+    zIndexInAnimation 3.5s linear 0s 1 forwards;
+}
+
+.card-rotate-scale-out-animation{
+  animation: cardRotateScaleOutAnimation 3s ease-in-out 1s 1 forwards;
+}
+
+.card-rotate-scale-in-animation{
+  animation: cardRotateScaleInAnimation 3s ease-in-out 0s 1 forwards;
+}

@@ -10,6 +10,7 @@ const SequencePlayer = ({
   height, 
   folderPath,
   animationState = 'start', // start, end, forwards, backwards
+  onLoad,
   className
 }) => {
   const canvasRef = useRef(null);
@@ -21,7 +22,7 @@ const SequencePlayer = ({
 
   // Helper: Matches "frame_001.webp" format
   const getFramePath = (index) => {
-    const paddedIndex = (index + 1).toString().padStart(3, '0');
+    const paddedIndex = (index + 1).toString().padStart(4, '0');
     return `${folderPath}/frame_${paddedIndex}.webp`;
   };
 
@@ -47,6 +48,7 @@ const SequencePlayer = ({
 
     Promise.all(promises).then(() => {
         if (isMounted) setIsLoaded(true);
+        if(onLoad) onLoad();
     });
 
     return () => { isMounted = false; }
@@ -111,12 +113,13 @@ const SequencePlayer = ({
   }, [isLoaded, fps, width, height, frameCount, animationState]);
 
   return (
-    <div className={`relative w-full h-full ${className}`}>
+    <div className={`w-auto h-full border-green-400 border-0 box-content ${className}`}>
         <canvas 
-            ref={canvasRef} 
-            width={width} 
-            height={height}
-            style={{ width: '100%', height: 'auto', display: 'block' }} 
+          className="border-purple-400"
+          ref={canvasRef} 
+          width={width} 
+          height={height}
+          style={{ width: '100%', height: 'auto', display: 'block' }} 
         />
     </div>
   );

@@ -5,6 +5,7 @@ import SequencePlayer from "./SequencePlayer";
 import Image from 'next/image'
 import "./Envelope.css"
 import { parseSetCookie } from "next/dist/compiled/@edge-runtime/cookies";
+import Card from "./Card";
 
 export default function Envelope(){
   
@@ -19,6 +20,7 @@ export default function Envelope(){
   const [animationState, setAnimationState] = useState("end")
   const [stage, setStage] = useState(0) //0, 1, 2, 3, 4 - 5, 6, 7 back to 0
   const [transition, setTransition] = useState(false)
+  const [cardState, setCardState] = useState("start")
 
   function nextState(){
     if(!transition){
@@ -36,9 +38,11 @@ export default function Envelope(){
           break
         case 3:
           setStage(4)
+          setCardState("forwards")
           break
         case 4:
           setStage(5)
+          setCardState("backwards")
           break
         case 5:
           setStage(6)
@@ -105,8 +109,7 @@ export default function Envelope(){
 
         {/* OUTER CARD */}
         <div className={`
-          absolute w-606/1000 h-37/100 left-18/100 top-31/100  
-          bg-red-300 z-2
+          absolute w-810/1000 h-37/100 left-8/100 top-31/100
           ${stage == 3 ? "card-move-out-animation" : ""}
           ${stage > 3 && stage < 7 ? "z-20" : ""}
           ${stage == 6 ? "card-move-in-animation" : ""}
@@ -114,12 +117,12 @@ export default function Envelope(){
           {/* INNER CARD */}
           <div className={`
             absolute w-full h-full
-            bg-purple-200 z-3
+            z-3
             ${stage >= 3 && stage < 6 ? "card-rotate-scale-out-animation" : 
               stage >=6 ? "card-rotate-scale-in-animation" : ""
             }
           `}>
-
+            <Card cardState={cardState} />
           </div>
         </div>
 

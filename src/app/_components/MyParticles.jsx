@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 
-export default function MyParticles(){
+export default function MyParticles({ className }){
 
   const [init, setInit] = useState(false);
 
@@ -33,8 +33,8 @@ export default function MyParticles(){
         },
         move: {
           enable: true,
-          speed: 1,
-          direction: "bottom",
+          speed: 0.5,
+          direction: "right",
           straight: false,
           random: false,  
           outModes: {
@@ -61,7 +61,9 @@ export default function MyParticles(){
   if (!init) return null;
 
   return (
-    <div className="w-full h-full relative border border-pink-500 overflow-hidden">
+    <div className={`
+      invisible w-50 h-50 absolute border border-pink-500 overflow-hidden ${className}
+    `}>
       <Particles
         id="tsparticles"
         options={options}

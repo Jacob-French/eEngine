@@ -27,11 +27,11 @@
 
 @keyframes cardRotateScaleOutAnimation{
   0% { rotate: 0deg; scale: 1; }
-  100% { rotate: 90deg; scale: 1.7; }
+  100% { rotate: 90deg; scale: 1.9; }
 }
 
 @keyframes cardRotateScaleInAnimation{
-  0% { rotate: 90deg; scale: 1.7; }
+  0% { rotate: 90deg; scale: 1.9; }
   100% { rotate: 0deg; scale: 1; }
 }
 

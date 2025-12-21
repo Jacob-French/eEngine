@@ -73,7 +73,7 @@ export default function Envelope(){
   }
 
   return(
-    <div className="relative border-2 aspect-square border-emerald-500 w-full">
+    <div className="relative aspect-square border-emerald-500 w-full">
       <button 
         className="w-full h-full absolute border-red-300 cursor-pointer z-100" 
         onClick={nextState}  

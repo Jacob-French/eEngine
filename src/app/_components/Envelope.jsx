@@ -21,6 +21,7 @@ export default function Envelope(){
   const [stage, setStage] = useState(0) //0, 1, 2, 3, 4 - 5, 6, 7 back to 0
   const [transition, setTransition] = useState(false)
   const [cardState, setCardState] = useState("start")
+  const [particlesVisible, setParticlesVisible] = useState(true)
 
   function nextState(){
     if(!transition){
@@ -39,10 +40,12 @@ export default function Envelope(){
         case 3:
           setStage(4)
           setCardState("forwards")
+          setParticlesVisible(false)
           break
         case 4:
           setStage(5)
           setCardState("backwards")
+          setTimeout(() => {setParticlesVisible(true)}, 700)
           break
         case 5:
           setStage(6)
@@ -70,7 +73,7 @@ export default function Envelope(){
   }
 
   return(
-    <div className="relative border-emerald-500 w-full h-full">
+    <div className="relative border-2 aspect-square border-emerald-500 w-full">
       <button 
         className="w-full h-full absolute border-red-300 cursor-pointer z-100" 
         onClick={nextState}  
@@ -109,7 +112,7 @@ export default function Envelope(){
 
         {/* OUTER CARD */}
         <div className={`
-          absolute w-810/1000 h-37/100 left-8/100 top-31/100
+          absolute w-560/1000 h-37/100 left-20/100 top-31/100
           ${stage == 3 ? "card-move-out-animation" : ""}
           ${stage > 3 && stage < 7 ? "z-20" : ""}
           ${stage == 6 ? "card-move-in-animation" : ""}
@@ -122,7 +125,7 @@ export default function Envelope(){
               stage >=6 ? "card-rotate-scale-in-animation" : ""
             }
           `}>
-            <Card cardState={cardState} />
+            <Card cardState={cardState} particlesVisible={particlesVisible} />
           </div>
         </div>
 

@@ -21,6 +21,7 @@ export default function MyParticles({ className }){
         enable: false,  // This is the key!
         zIndex: 0
       },
+      detectRetina: true,
       background: {
         color: {
           value: "transparent",
@@ -33,7 +34,7 @@ export default function MyParticles({ className }){
         },
         move: {
           enable: true,
-          speed: 0.5,
+          speed: 0.2,
           direction: "right",
           straight: false,
           random: false,  
@@ -45,7 +46,7 @@ export default function MyParticles({ className }){
           value: 50,
         },
         opacity: {
-          value: {min: 0.3, max: 0.9},
+          value: {min: 0.1, max: 0.6},
         },
         shape: {
           type: "circle",
@@ -62,9 +63,11 @@ export default function MyParticles({ className }){
 
   return (
     <div className={`
-      invisible w-50 h-50 absolute border border-pink-500 overflow-hidden ${className}
+      w-[185%] h-[205%] scale-[0.5] -translate-x-[23%] -translate-y-[25%]
+      absolute border-pink-500 overflow-hidden ${className}
     `}>
       <Particles
+        className="border-green-400 w-full h-full"
         id="tsparticles"
         options={options}
         style={{

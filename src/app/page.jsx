@@ -24,7 +24,7 @@ export default function Home() {
   return (
     <div className="h-full flex flex-coll justify-center items-center">
       <div className={`
-        w-130 h-130
+        w-150 h-150
       `}>
         <Envelope />
       </div>

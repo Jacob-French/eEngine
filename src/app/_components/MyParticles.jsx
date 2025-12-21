@@ -30,7 +30,7 @@ export default function MyParticles({ className }){
       fpsLimit: 30,
       particles: {
         color: {
-          value: ["#ffb751ff", "#e72222ff", "#f949c7ff"],
+          value: ["#ffb751ff", "#ffb813ff", "#f56117ff", "#f51e17ff", "#ff3586ff"],
         },
         move: {
           enable: true,
@@ -46,13 +46,13 @@ export default function MyParticles({ className }){
           value: 50,
         },
         opacity: {
-          value: {min: 0.1, max: 0.6},
+          value: {min: 0.05, max: 0.3},
         },
         shape: {
           type: "circle",
         },
         size: {
-          value: { min: 1, max: 5 },
+          value: { min: 1, max: 8 },
         },
       },
     }),

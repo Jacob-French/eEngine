@@ -10,9 +10,9 @@ import Card from "./Card";
 export default function Envelope(){
   
   const FRAME_COUNT = 30
-  const FPS = 15
-  const IMAGE_WIDTH = 1510
-  const IMAGE_HEIGHT = 1080
+  const FPS = 20
+  const IMAGE_WIDTH = 1200
+  const IMAGE_HEIGHT = 1200
 
   const TOTAL_LAYERS = 2
   const [loadedCount, setLoadedCount] = useState(0)
@@ -88,7 +88,7 @@ export default function Envelope(){
         {/*FLAP*/}
         <SequencePlayer 
           className={`
-            absolute
+            absolute translate-y-[1px]
             ${stage >= 3 && stage < 7 ? "z-1" : "z-15"}
           `}
           frameCount={FRAME_COUNT}
@@ -114,7 +114,7 @@ export default function Envelope(){
 
         {/* OUTER CARD */}
         <div className={`
-          absolute w-560/1000 h-37/100 left-20/100 top-31/100
+          absolute w-763/1000 h-50/100 left-12/100 top-45/100
           ${stage == 3 ? "card-move-out-animation" : ""}
           ${stage > 3 && stage < 7 ? "z-20" : ""}
           ${stage == 6 ? "card-move-in-animation" : ""}
@@ -147,7 +147,7 @@ export default function Envelope(){
               border-sky-400 absolute  z-1
               ${stage > 0 ? "card-rotated card-transition-1" : "card-flat card-transition-2"}
             `}
-            src="/frames/envelope/back.png"
+            src="/frames/envelope/front.png"
             alt="envelope background"
             width={IMAGE_WIDTH}
             height={IMAGE_HEIGHT}

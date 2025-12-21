@@ -2,7 +2,7 @@ import { useState } from "react"
 import SequencePlayer from "./SequencePlayer"
 import MyParticles from "./MyParticles"
 
-export default function Card({ cardState, particlesVisible }){
+export default function Card({ cardState, particlesVisible, fireVisible }){
 
   const FRAME_COUNT = 10
   const FPS = 15
@@ -28,6 +28,24 @@ export default function Card({ cardState, particlesVisible }){
         animationState={cardState}
         onLoad={() => {}}
       />
+
+      <div className={`
+        absolute w-[20%] h-[20%] left-[38%] top-[30%] border-pink-300
+        ${fireVisible ? "" : "invisible"}
+      `}>
+        <SequencePlayer
+          className={`
+            absolute -translate-y-61/100 -rotate-90
+          `}
+          frameCount={32}
+          fps={FPS}
+          width={500}
+          height={500}
+          folderPath="/frames/fire"
+          animationState="loop"
+          onLoad={() => {}}
+        />
+      </div>
     </div>
   )
 }

@@ -22,6 +22,7 @@ export default function Envelope(){
   const [transition, setTransition] = useState(false)
   const [cardState, setCardState] = useState("start")
   const [particlesVisible, setParticlesVisible] = useState(true)
+  const [fireVisible, setFireVisible] = useState(true)
 
   function nextState(){
     if(!transition){
@@ -41,11 +42,12 @@ export default function Envelope(){
           setStage(4)
           setCardState("forwards")
           setParticlesVisible(false)
+          setFireVisible(false)
           break
         case 4:
           setStage(5)
           setCardState("backwards")
-          setTimeout(() => {setParticlesVisible(true)}, 700)
+          setTimeout(() => {setParticlesVisible(true); setFireVisible(true)}, 700)
           break
         case 5:
           setStage(6)
@@ -125,7 +127,7 @@ export default function Envelope(){
               stage >=6 ? "card-rotate-scale-in-animation" : ""
             }
           `}>
-            <Card cardState={cardState} particlesVisible={particlesVisible} />
+            <Card cardState={cardState} particlesVisible={particlesVisible} fireVisible={fireVisible} />
           </div>
         </div>
 

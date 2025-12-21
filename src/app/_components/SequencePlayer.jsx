@@ -9,7 +9,7 @@ const SequencePlayer = ({
   width, 
   height, 
   folderPath,
-  animationState = 'start', // start, end, forwards, backwards
+  animationState = 'start', // start, end, forwards, backwards, loop
   onLoad,
   className
 }) => {
@@ -65,13 +65,12 @@ const SequencePlayer = ({
   };
 
   // 3. ANIMATION CONTROLLER
-  // This effect handles the Logic (Resetting position) and the Loop (Ticking)
   useEffect(() => {
     if (!isLoaded) return;
 
     // A. HANDLE STATE CHANGES (JUMP TO START POSITIONS)
-    // Whenever animationState changes, we immediately set the starting frame.
-    if (animationState === 'forwards' || animationState === 'start') {
+    // If we switch to 'loop', we start at 0 (same as 'forwards')
+    if (animationState === 'forwards' || animationState === 'start' || animationState === 'loop') {
         frameIndexRef.current = 0;
     } else if (animationState === 'backwards' || animationState === 'end') {
         frameIndexRef.current = frameCount - 1;
@@ -86,15 +85,24 @@ const SequencePlayer = ({
     }
 
     // B. START ANIMATION LOOP
-    // Only runs if state is 'play-from-start' or 'play-backwards-from-end'
     const intervalMs = 1000 / fps;
     
     const tick = () => {
       let current = frameIndexRef.current;
+
+      // --- NEW LOOP LOGIC ---
+      if (animationState === 'loop') {
+        let nextFrame = current + 1;
+        // Seamlessly wrap back to 0 if we exceed the count
+        if (nextFrame >= frameCount) {
+            nextFrame = 0;
+        }
+        frameIndexRef.current = nextFrame;
+        drawFrame(nextFrame);
+        return; // Exit, so we don't run the forwards/backwards logic below
+      }
       
-      // Determine target based on which play mode we are in
-      // If playing from start, we want to reach the end (frameCount - 1)
-      // If playing backwards, we want to reach 0
+      // --- EXISTING FORWARDS / BACKWARDS LOGIC ---
       let target = (animationState === 'forwards') ? frameCount - 1 : 0; 
 
       // If we reached the target, stop updating

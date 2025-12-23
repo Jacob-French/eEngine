@@ -10,7 +10,11 @@ export default function Card({ cardState, particlesVisible, fireVisible }){
   const IMAGE_HEIGHT = 1920
 
   return(
-    <div className="h-full relative border-red-300">
+    <div className={`
+      h-full relative border-red-300 
+      transition-transform duration-500 ease-in-out
+      ${cardState == "forwards" ? "scale-[0.5] sm:scale-[0.8] md:scale-[1]" : ""}
+    `}>
       <MyParticles className={`
         absolute z-30
         ${particlesVisible ? "" : "invisible"}

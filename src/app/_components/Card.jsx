@@ -4,8 +4,8 @@ import MyParticles from "./MyParticles"
 
 export default function Card({ cardState, particlesVisible, fireVisible }){
 
-  const FRAME_COUNT = 10
-  const FPS = 15
+  const FRAME_COUNT = 15
+  const FPS = 20
   const IMAGE_WIDTH = 1318
   const IMAGE_HEIGHT = 1920
 

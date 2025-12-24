@@ -5,7 +5,7 @@ import SequencePlayer from "./SequencePlayer";
 import Image from 'next/image'
 import "./Envelope.css"
 import { parseSetCookie } from "next/dist/compiled/@edge-runtime/cookies";
-import Card from "./Card";
+import CardGG from "./CardGG";
 
 export default function Envelope({ folder }){
   

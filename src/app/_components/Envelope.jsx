@@ -5,7 +5,7 @@ import SequencePlayer from "./SequencePlayer";
 import Image from 'next/image'
 import "./Envelope.css"
 import { parseSetCookie } from "next/dist/compiled/@edge-runtime/cookies";
-import CardGG from "./CardGG";
+import Card from "./Card";
 
 export default function Envelope({ folder }){
   
@@ -127,7 +127,7 @@ export default function Envelope({ folder }){
               stage >=6 ? "card-rotate-scale-in-animation" : ""
             }
           `}>
-            <CardGG cardState={cardState} particlesVisible={particlesVisible} fireVisible={fireVisible} folder={folder} />
+            <Card cardState={cardState} particlesVisible={particlesVisible} fireVisible={fireVisible} folder={folder} />
           </div>
         </div>
 

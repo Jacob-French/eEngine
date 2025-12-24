@@ -77,7 +77,7 @@ export default function Envelope(){
   return(
     <div className="relative aspect-square border-emerald-500 w-full">
       <button 
-        className="w-full h-full absolute border-red-300 cursor-pointer z-100" 
+        className="w-full h-full absolute border-red-300 cursor-pointer z-100 scale-[2]" 
         onClick={nextState}  
       />
 
@@ -156,18 +156,3 @@ export default function Envelope(){
     </div>
   )
 }
-
-/*
-
-<SequencePlayer 
-  frameCount={FRAME_COUNT}
-  fps={15} // 15fps as requested
-  width={IMAGE_WIDTH}
-  height={IMAGE_HEIGHT}
-  folderPath="/frames/envelope/cover" // Note the leading slash, pointing to public folder
-  animationState={animationState}
-  className="cursor-pointer"
-  C:\_Jacob\Projects\Christmas\E Cards\e-engine1\public\frames\envelope\back.png
-/>
-
-*/

@@ -2,7 +2,7 @@ import { useState } from "react"
 import SequencePlayer from "./SequencePlayer"
 import MyParticles from "./MyParticles"
 
-export default function Card({ cardState, particlesVisible, fireVisible }){
+export default function Card({ cardState, particlesVisible, fireVisible, folder }){
 
   const FRAME_COUNT = 15
   const FPS = 20
@@ -28,7 +28,7 @@ export default function Card({ cardState, particlesVisible, fireVisible }){
         fps={FPS}
         width={IMAGE_WIDTH}
         height={IMAGE_HEIGHT}
-        folderPath="/frames/card"
+        folderPath={`/${folder}/frames/card`}
         animationState={cardState}
         onLoad={() => {}}
       />
@@ -45,7 +45,7 @@ export default function Card({ cardState, particlesVisible, fireVisible }){
           fps={FPS}
           width={500}
           height={500}
-          folderPath="/frames/fire"
+          folderPath={`/${folder}/frames/fire`}
           animationState="loop"
           onLoad={() => {}}
         />

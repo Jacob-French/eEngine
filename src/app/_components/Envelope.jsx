@@ -7,7 +7,7 @@ import "./Envelope.css"
 import { parseSetCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import Card from "./Card";
 
-export default function Envelope(){
+export default function Envelope({ folder }){
   
   const FRAME_COUNT = 30
   const FPS = 20
@@ -95,7 +95,7 @@ export default function Envelope(){
           fps={FPS}
           width={IMAGE_WIDTH}
           height={IMAGE_HEIGHT}
-          folderPath="/frames/envelope/flap"
+          folderPath={`/${folder}/frames/envelope/flap`}
           animationState={animationState}
           onLoad={onSequenceLoad}
         />
@@ -107,7 +107,7 @@ export default function Envelope(){
           fps={FPS}
           width={IMAGE_WIDTH}
           height={IMAGE_HEIGHT}
-          folderPath="/frames/envelope/cover"
+          folderPath={`/${folder}/frames/envelope/cover`}
           animationState={animationState}
           onLoad={onSequenceLoad}
         />
@@ -127,14 +127,14 @@ export default function Envelope(){
               stage >=6 ? "card-rotate-scale-in-animation" : ""
             }
           `}>
-            <Card cardState={cardState} particlesVisible={particlesVisible} fireVisible={fireVisible} />
+            <Card cardState={cardState} particlesVisible={particlesVisible} fireVisible={fireVisible} folder={folder} />
           </div>
         </div>
 
         {/*BACKGROUND*/}
           <Image 
             className="border-sky-400 z-1"
-            src="/frames/envelope/back.png"
+            src={`/${folder}/frames/envelope/back.png`}
             alt="envelope background"
             width={IMAGE_WIDTH}
             height={IMAGE_HEIGHT}
@@ -147,7 +147,7 @@ export default function Envelope(){
               border-sky-400 absolute  z-1
               ${stage > 0 ? "card-rotated card-transition-1" : "card-flat card-transition-2"}
             `}
-            src="/frames/envelope/front.png"
+            src={`/${folder}/frames/envelope/front.png`}
             alt="envelope background"
             width={IMAGE_WIDTH}
             height={IMAGE_HEIGHT}

@@ -7,7 +7,7 @@ import Envelope from "../_components/Envelope";
 export default function Home() {
   
   return (
-    <div className="h-full flex flex-coll justify-center items-center">
+    <div className="h-full flex flex-coll justify-center items-start pt-20">
       <div className={`
         w-100 h-100 -translate-y-12
       `}>

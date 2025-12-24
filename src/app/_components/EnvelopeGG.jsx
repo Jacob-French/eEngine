@@ -5,7 +5,7 @@ import SequencePlayer from "./SequencePlayer";
 import Image from 'next/image'
 import "./Envelope.css"
 import { parseSetCookie } from "next/dist/compiled/@edge-runtime/cookies";
-import CardGG from "./CardGG";
+import Card from "./Card";
 
 export default function Envelope({ folder }){
   
@@ -22,7 +22,6 @@ export default function Envelope({ folder }){
   const [transition, setTransition] = useState(false)
   const [cardState, setCardState] = useState("start")
   const [particlesVisible, setParticlesVisible] = useState(true)
-  const [fireVisible, setFireVisible] = useState(true)
 
   function nextState(){
     if(!transition){
@@ -42,12 +41,11 @@ export default function Envelope({ folder }){
           setStage(4)
           setCardState("forwards")
           setParticlesVisible(false)
-          setFireVisible(false)
           break
         case 4:
           setStage(5)
           setCardState("backwards")
-          setTimeout(() => {setParticlesVisible(true); setFireVisible(true)}, 700)
+          setTimeout(() => {setParticlesVisible(true)}, 700)
           break
         case 5:
           setStage(6)
@@ -127,7 +125,7 @@ export default function Envelope({ folder }){
               stage >=6 ? "card-rotate-scale-in-animation" : ""
             }
           `}>
-            <CardGG cardState={cardState} particlesVisible={particlesVisible} fireVisible={fireVisible} folder={folder} />
+            <CardGG cardState={cardState} particlesVisible={particlesVisible} folder={folder} />
           </div>
         </div>
 
